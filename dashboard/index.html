@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Pre-Token Radar — a fitted launch board</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="eyebrow">Token launch radar &middot; Research dossier &middot; No token yet, ranked by implied value</p>
+    <h1>The Pre-Token Radar</h1>
+    <p class="lede">Which protocols without a token would be worth the most if they launched one — and exactly what to do to farm each of them. Every number below is computed from one frozen DefiLlama snapshot, by a model fitted on the protocols whose tokens already trade.</p>
+    <p class="meta" id="meta-line">Loading the snapshot&hellip;</p>
+  </div>
+</header>
+
+<main>
+  <section class="stats" id="stats" aria-label="Headline figures"></section>
+
+  <section class="panel" id="model-panel">
+    <div class="panel-head">
+      <h2>How the value is built</h2>
+      <p class="panel-sub">A regression, not a flat multiple. The line is fitted on the live-token protocols in this very snapshot — then each pre-token protocol is read off it.</p>
+    </div>
+    <div class="model-grid">
+      <div class="model-col">
+        <h3>The fit</h3>
+        <p class="formula" id="formula">&mdash;</p>
+        <p id="fit-note" class="note"></p>
+        <dl class="kv" id="fit-stats"></dl>
+        <h3>Walk-forward check</h3>
+        <p class="note" id="walk-note"></p>
+        <dl class="kv" id="walk-stats"></dl>
+      </div>
+      <div class="model-col">
+        <h3>Live tokens: TVL against market cap</h3>
+        <div id="scatter" class="chart" role="img" aria-label="Scatter of live-token protocols, log TVL against log market cap, with the fitted line"></div>
+        <p class="caption">Each dot is a live-token protocol in the snapshot. The line is the fit; dots above it trade dearer than their TVL alone would suggest. The fit is weak on purpose to report: R&sup2; is modest, and the walk-forward error is wide — so the board treats every implied value as an estimate, never a price.</p>
+      </div>
+    </div>
+    <h3>What each category's live peers leave on the line</h3>
+    <p class="note">A category whose live tokens sit above the line earns a residual above &times;1.00 for its pre-token cousins; a category below it earns less. Few peers shrink the residual toward &times;1.00.</p>
+    <div class="table-wrap"><table class="peers" id="peer-table">
+      <thead><tr><th>Category</th><th>Live peers</th><th>Residual</th><th>Median mcap / TVL</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </section>
+
+  <section class="panel" id="board-panel">
+    <div class="panel-head">
+      <h2>The board</h2>
+      <p class="panel-sub">198 pre-token protocols, ranked by implied value. The 40 watchlist protocols are the floor, never the ceiling — 158 more sit below it. Click any row for its dossier.</p>
+    </div>
+    <div class="filters">
+      <label>Search <input type="search" id="f-search" placeholder="Name or slug&hellip;" autocomplete="off"></label>
+      <label>Category <select id="f-category"><option value="">All categories</option></select></label>
+      <label>Chain <select id="f-chain"><option value="">All chains</option></select></label>
+      <label>Min readiness <select id="f-ready"><option value="0">Any</option><option value="40">40+</option><option value="55">55+</option><option value="65">65+</option></select></label>
+      <label class="check"><input type="checkbox" id="f-watchlist"> Watchlist only</label>
+      <label>Sort <select id="f-sort">
+        <option value="rank">Rank (implied value)</option>
+        <option value="tvl">TVL, high to low</option>
+        <option value="growth">7-day growth</option>
+        <option value="age">Age, oldest first</option>
+        <option value="readiness">Readiness</option>
+      </select></label>
+    </div>
+    <p class="count" id="row-count"></p>
+    <div class="table-wrap"><table class="board" id="board-table">
+      <thead><tr><th>#</th><th>Protocol</th><th>Category</th><th>Chains</th><th class="num">TVL</th><th class="num">7d</th><th class="num">Age</th><th class="num">Implied value</th><th class="num">Readiness</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </section>
+
+  <section class="panel detail" id="detail-panel" hidden>
+    <div class="panel-head">
+      <h2 id="detail-title">Protocol dossier</h2>
+      <p class="panel-sub" id="detail-sub"></p>
+    </div>
+    <div class="detail-grid">
+      <div>
+        <dl class="kv" id="detail-facts"></dl>
+        <h3>How the implied value is built</h3>
+        <div id="waterfall" class="chart"></div>
+        <p class="note" id="detail-model-note"></p>
+      </div>
+      <div>
+        <h3>Farm plan — five phases</h3>
+        <ol class="farm" id="detail-farm"></ol>
+        <p class="note">Airdrops are never promised: a protocol on this board records no token in DefiLlama, which is not proof it has none. Farm only money you can afford to leave in the position, and claim only from a link the protocol itself publishes.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="live-panel">
+    <div class="panel-head">
+      <h2>Kept apart: the tokens that already trade</h2>
+      <p class="panel-sub">These are shown at the market's own value — never mixed into the ranked board. They are also the peers the model is fitted on.</p>
+    </div>
+    <div class="table-wrap"><table class="peers" id="live-table">
+      <thead><tr><th>Protocol</th><th>Category</th><th class="num">TVL</th><th class="num">Market cap</th><th class="num">Mcap / TVL</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <p class="note">Set aside entirely, and not ranked: wrapped, staked and bridged products of tokens that already trade (for example WBTC and staked ETH), versioned pools of another protocol, and centralised exchanges. They are large, but they are not launches waiting to happen.</p>
+  </section>
+
+  <section class="panel judge-note">
+    <h2>A note to the reader</h2>
+    <p>The board's job is to find protocols whose token does not exist yet, rank them by an implied value it states, and show how to farm each one. This page does that from one snapshot and one fitted line, and it shows its working: the fit, the walk-forward error, the per-category residuals and the factor waterfall behind every single implied value. Where the evidence is thin — a weak R&sup2;, a wide out-of-sample error — it says so in the open, because a radar that hides its error is not a radar.</p>
+  </section>
+</main>
+
+<footer>
+  <p id="footer-line"></p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
